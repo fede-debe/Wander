@@ -57,6 +57,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // add marker with LongClick
         setMapLongClick(map)
+        setPoiClick(map)
 
         /** DEFAULT marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
@@ -111,6 +112,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .title(getString(R.string.dropped_pin))
                     .snippet(snippet)
             )
+        }
+    }
+
+    // add Marker on PlaceOfInterest
+    private fun setPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener { poi ->
+            val poiMarker = map.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )
+            poiMarker.showInfoWindow()
         }
     }
 
