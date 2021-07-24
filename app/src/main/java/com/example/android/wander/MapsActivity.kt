@@ -12,6 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.android.wander.databinding.ActivityMapsBinding
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -54,6 +55,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // add marker to specified coordinates - MarkerOptions object allow you to define properties of the marker
         map.addMarker(MarkerOptions().position(homeLatLng))
 
+        // add marker with LongClick
+        setMapLongClick(map)
+
         /** DEFAULT marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
         map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
@@ -87,6 +91,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { latLng ->
+
+            // add infoWindow to new marker
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                latLng.latitude,
+                latLng.longitude
+            )
+
+            // add marker
+            map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(getString(R.string.dropped_pin))
+                    .snippet(snippet)
+            )
+        }
     }
 
 
